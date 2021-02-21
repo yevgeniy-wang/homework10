@@ -70,8 +70,11 @@ class PostController
         $post = Post::find($id);
         $categories = Category::all();
         $tags = Tag::all();
-        $_SESSION['data']['category'] = $post->category_id;
-        $_SESSION['data']['tags'] = $post->tags->pluck('id')->toArray();
+        unset($_SESSION['db']);
+
+        $_SESSION['db']['category'] = $_SESSION['data']['category'] ?? $post->category_id;
+        $_SESSION['db']['tags'] = $_SESSION['data']['tags'] ?? $post->tags->pluck('id')->toArray();
+
 
         return view('pages/posts/form', compact('post', 'categories', 'tags'));
     }
@@ -95,6 +98,7 @@ class PostController
         if (count($error) > 0) {
             $_SESSION['data'] = $data;
             $_SESSION['errors'] = $error->toArray();
+
             return new RedirectResponse($_SERVER['HTTP_REFERER']);
         }
 

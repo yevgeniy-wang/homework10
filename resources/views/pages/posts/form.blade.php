@@ -49,7 +49,8 @@
             <select id="category" name="category" class="form-select" aria-label="Default select example">
                 <option selected>Choose category</option>
                 @foreach($categories as $category)
-                    <option @if(isset($_SESSION['data']['category']) == $category->id) selected
+                    <option @if(isset($_SESSION['data']['category']) && $_SESSION['data']['category'] == $category->id) selected
+                            @elseif(isset($_SESSION['db']['category']) && $_SESSION['db']['category'] == $category->id) selected
                             @endif value="{{ $category->id }}">{{ $category->title }}</option>
                 @endforeach
             </select>
@@ -66,7 +67,10 @@
             <div class="form-check">
                 @foreach($tags as $tag)
                     <input class="form-check-input"
-                           @if(isset($_SESSION['data']['tags']) && in_array($tag->id, $_SESSION['data']['tags'])) checked
+                           @if(isset($_SESSION['data']['tags']) && in_array($tag->id, $_SESSION['data']['tags']))
+                                checked
+                           @elseif (isset($_SESSION['db']['tags']) && in_array($tag->id, $_SESSION['db']['tags']))
+                                checked
                            @endif type="checkbox" value="{{ $tag->id }}" id="tags" name="tags[]">
                     <label class="form-check-label" for="tags">
                         {{ $tag->title }}
@@ -91,8 +95,8 @@
             <input type="submit" class="btn btn-primary mb-3" value="Save">
         </div>
     </form>
-
     @php
-        unset($_SESSION['data'])
+        unset($_SESSION['db']);
+        unset($_SESSION['data']);
     @endphp
 @endsection
