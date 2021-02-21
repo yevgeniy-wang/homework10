@@ -50,7 +50,7 @@
                 <option selected>Choose category</option>
                 @foreach($categories as $category)
                     <option @if(isset($_SESSION['data']['category']) && $_SESSION['data']['category'] == $category->id) selected
-                            @elseif(isset($_SESSION['db']['category']) && $_SESSION['db']['category'] == $category->id) selected
+                            @elseif(isset($category_id) && $category_id == $category->id) selected
                             @endif value="{{ $category->id }}">{{ $category->title }}</option>
                 @endforeach
             </select>
@@ -69,7 +69,7 @@
                     <input class="form-check-input"
                            @if(isset($_SESSION['data']['tags']) && in_array($tag->id, $_SESSION['data']['tags']))
                                 checked
-                           @elseif (isset($_SESSION['db']['tags']) && in_array($tag->id, $_SESSION['db']['tags']))
+                           @elseif (isset($tag_id) && in_array($tag->id, $tag_id))
                                 checked
                            @endif type="checkbox" value="{{ $tag->id }}" id="tags" name="tags[]">
                     <label class="form-check-label" for="tags">
@@ -96,7 +96,6 @@
         </div>
     </form>
     @php
-        unset($_SESSION['db']);
         unset($_SESSION['data']);
     @endphp
 @endsection
